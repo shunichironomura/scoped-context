@@ -1,5 +1,25 @@
 # scoped-context
+
+[![PyPI](https://img.shields.io/pypi/v/scoped-context)](https://pypi.org/project/scoped-context/)
+![PyPI - License](https://img.shields.io/pypi/l/scoped-context)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/scoped-context)
+[![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/scoped-context)
+
 `scoped-context` helps manage scopes using context managers in Python.
+
+## Installation
+
+```bash
+pip install scoped-context
+```
+
+or
+
+```bash
+uv add scoped-context
+```
 
 ## Usage
 

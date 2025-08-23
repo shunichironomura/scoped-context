@@ -2,11 +2,18 @@
 
 from __future__ import annotations
 
-__all__ = ["ScopedContext"]
+__all__ = ["ScopedContext", "get_context_stack", "get_current_context"]
 
 import queue
+import sys
 import threading
-from typing import TYPE_CHECKING, ClassVar, Self
+
+if sys.version_info >= (3, 11):
+    from typing import TYPE_CHECKING, ClassVar, Self
+else:
+    from typing import TYPE_CHECKING, ClassVar
+
+    from typing_extensions import Self
 
 if TYPE_CHECKING:
     from types import TracebackType

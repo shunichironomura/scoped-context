@@ -8,11 +8,15 @@ authors = [
 ]
 license = "MIT"
 license-files = ["LICENSE"]
-requires-python = ">=3.13"
-dependencies = []
+requires-python = ">=3.9"
+dependencies = ["typing-extensions>=4.14.1; python_version<'3.11'"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Programming Language :: Python",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3 :: Only",
     "License :: OSI Approved :: MIT License",
