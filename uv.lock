@@ -222,7 +222,7 @@ wheels = [
 
 [[package]]
 name = "scoped-context"
-version = "0.0.1.dev1"
+version = "0.0.1"
 source = { editable = "." }
 
 [package.dev-dependencies]

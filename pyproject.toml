@@ -1,6 +1,6 @@
 [project]
 name = "scoped-context"
-version = "0.0.1.dev1"
+version = "0.0.1"
 description = "Use contexts (`with` statements) to manage scopes."
 readme = "README.md"
 authors = [
