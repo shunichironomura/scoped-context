@@ -12,6 +12,10 @@ if TYPE_CHECKING:
     from types import TracebackType
 
 
+class NoContextError(Exception):
+    """Exception raised when there is no current context."""
+
+
 class ScopedContext:
     """A mixin class for context management."""
 
@@ -47,7 +51,7 @@ class ScopedContext:
         return cls._stack().queue
 
     @classmethod
-    def classwide_context_stack(
+    def _classwide_context_stack(
         cls,
         class_or_tuple: type[ScopedContext] | tuple[type[ScopedContext], ...] | None = None,
     ) -> list[ScopedContext]:
@@ -62,24 +66,26 @@ class ScopedContext:
         return cls._classwide_stack().queue
 
     @classmethod
-    def current(cls) -> Self | None:
+    def current(cls) -> Self:
         """Get the current context of the class."""
         if cls._stack().qsize() == 0:
-            return None
+            msg = "No current context"
+            raise NoContextError(msg)
         return cls._stack().queue[-1]
 
     @classmethod
-    def current_classwide(
+    def _current_classwide(
         cls,
         class_or_tuple: type[ScopedContext] | tuple[type[ScopedContext], ...] | None = None,
-    ) -> ScopedContext | None:
+    ) -> ScopedContext:
         """Get the current classwide context.
 
         If class_or_tuple is provided, filter the queue to only include instances of the specified class or classes.
         """
-        queue = cls.classwide_context_stack(class_or_tuple)
+        queue = cls._classwide_context_stack(class_or_tuple)
         if not queue:
-            return None
+            msg = "No current classwide context"
+            raise NoContextError(msg)
         return queue[-1]
 
     def __enter__(self) -> Self:
@@ -97,3 +103,31 @@ class ScopedContext:
         """Exit the context."""
         self._stack().get(block=False)
         self._classwide_stack().get(block=False)
+
+
+def get_current_context(
+    class_or_tuple: type[ScopedContext] | tuple[type[ScopedContext], ...] | None = None,
+) -> ScopedContext:
+    """Get the current classwide context.
+
+    If class_or_tuple is provided, filter the queue to only include instances of the specified class or classes.
+    """
+    queue = ScopedContext._classwide_context_stack(class_or_tuple)  # noqa: SLF001
+    if not queue:
+        msg = "No current classwide context"
+        raise NoContextError(msg)
+    return queue[-1]
+
+
+def get_context_stack(
+    class_or_tuple: type[ScopedContext] | tuple[type[ScopedContext], ...] | None = None,
+) -> list[ScopedContext]:
+    """Get the classwide stack queue for the current context.
+
+    The last item of the returned list is the current classwide context.
+
+    If class_or_tuple is provided, filter the queue to only include instances of the specified class or classes.
+    """
+    if class_or_tuple is not None:
+        return [item for item in ScopedContext._classwide_stack().queue if isinstance(item, class_or_tuple)]  # noqa: SLF001
+    return ScopedContext._classwide_stack().queue  # noqa: SLF001
